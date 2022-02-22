@@ -310,6 +310,7 @@ def efo_etl_process(function):
                     click.echo("\n".join(parent_term_table_inserts))
                     for stmnt in parent_term_table_inserts:
                         cursor.execute(stmnt)
+                    conn.commit()
             except (Exception, psycopg2.DatabaseError) as error:
                 conn.rollback()
                 raise error
