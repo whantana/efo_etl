@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  efo_etl:
+    container_name: efo_etl
+    image: whantana/efo_etl:latest
+
+  postgres:
+    container_name: efo_postgres
+    image: postgres:13
+    environment:
+      POSTGRES_USER: efo_etl
+      POSTGRES_PASSWORD: efo_etl
+      POSTGRES_DB: efo_etl
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    ports:
+    - 5432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "efo_etl"]
+      interval: 5s
+      retries: 5
+    restart: always
+
+volumes:
+    postgres-db-volume:
